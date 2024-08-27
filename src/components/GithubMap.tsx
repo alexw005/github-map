@@ -6,7 +6,6 @@ import GeoMap from "./GeoMap";
 import LoadCountryTask, { Country } from "@/lib/helper/loadCountryTask";
 import legendItems from "@/lib/legend/legendItems";
 import Legend from "./Legend";
-// import legendItems from "../entities/LegendItems";
 
 const GithubMap = () => {
     const [countries, setCountries] = useState<Country[]

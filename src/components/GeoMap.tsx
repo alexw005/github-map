@@ -8,8 +8,8 @@ const GeoMap = ({ countries }: { countries: Country[] }) => {
 
     const mapStyle = {
         fillColor: "white",
-        weight: 1,
-        color: "purple",
+        weight: 2,
+        color: "grey",
         fillOpacity: 1,
     };
 
@@ -24,7 +24,7 @@ const GeoMap = ({ countries }: { countries: Country[] }) => {
         features: countries,
     }
     return (
-        <MapContainer style={{ height: "90vh" }} zoom={2} center={[20, 60]}>
+        <MapContainer style={{ height: "90vh" }} zoom={5} center={[20, 60]}>
             <GeoJSON
                 style={mapStyle}
                 data={countriesGeoJSON}
