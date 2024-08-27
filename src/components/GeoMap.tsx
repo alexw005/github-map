@@ -1,4 +1,3 @@
-'use client'
 import React from "react";
 import { MapContainer, GeoJSON } from "react-leaflet";
 import { Country, CountryProperties } from "@/lib/helper/loadCountryTask";
@@ -6,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 // import "./CovidMap.css";
 
 const GeoMap = ({ countries }: { countries: Country[] }) => {
+
     const mapStyle = {
         fillColor: "white",
         weight: 1,

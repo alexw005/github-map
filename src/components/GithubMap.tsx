@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React, { useState, useEffect } from "react";
 
 import Loading from "./Loading";
@@ -10,10 +10,6 @@ import LoadCountryTask, { Country } from "@/lib/helper/loadCountryTask";
 const GithubMap = () => {
     const [countries, setCountries] = useState<Country[]
     >([]);
-    const [isBrowser, setIsBrowser] = useState(false);
-
-
-
     // const legendItemsReverse = [...legendItems].reverse();
 
     const load = () => {
@@ -23,13 +19,11 @@ const GithubMap = () => {
     };
     useEffect(() => {
         load();
-        // Check if the code is running in the browser
-        setIsBrowser(typeof window !== "undefined");
     }, []);
 
     return (
         <div>
-            {!isBrowser || countries.length === 0 ? (
+            {countries.length === 0 ? (
                 <Loading />
             ) : (
                 <div>
