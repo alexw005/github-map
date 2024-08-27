@@ -9,7 +9,7 @@ const GeoMap = ({ countries }: { countries: Country[] }) => {
     const mapStyle = {
         fillColor: "white",
         weight: 1,
-        color: "black",
+        color: "purple",
         fillOpacity: 1,
     };
 

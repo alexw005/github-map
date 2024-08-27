@@ -1,5 +1,5 @@
 import papa from "papaparse";
-// import legendItems from "../entities/LegendItems";
+import legendItems from "../legend/legendItems";
 import countries from "../geoJson/countries.json";
 
 
@@ -56,7 +56,7 @@ class LoadCountryTask {
                     confirmed
                 );
             }
-            // this.setCountryColor(country);
+            this.setCountryColor(country);
         }
 
         if (this.setState) {
@@ -64,13 +64,13 @@ class LoadCountryTask {
         }
     }
 
-    // private setCountryColor(country: Country): void {
-    //     const legendItem = legendItems.find((item: any) =>
-    //         item.isFor(country.properties.confirmed)
-    //     );
+    private setCountryColor(country: Country): void {
+        const legendItem = legendItems.find((item: any) =>
+            item.isFor(country.properties.confirmed)
+        );
 
-    //     if (legendItem != null) country.properties.color = legendItem.color;
-    // }
+        if (legendItem != null) country.properties.color = legendItem.color;
+    }
 
     private formatNumberWithCommas(number: number): string {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
