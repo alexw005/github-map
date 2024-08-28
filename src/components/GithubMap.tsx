@@ -12,9 +12,7 @@ const DynamicGeoMap = dynamic(() => import("./GeoMap"), {
 })
 const GithubMap = () => {
   const [countries, setCountries] = useState<Country[]>([]);
-  const legendItemsReverse = [...legendItems].reverse();
   const [searchText, setSearchText] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<Country | null>(null);
   const loadData = (s: string) => {
     const loadCountriesTask = new LoadCountryTask();
     loadCountriesTask.loadGithub(s, (countries) => setCountries(countries));
@@ -35,7 +33,6 @@ const GithubMap = () => {
       ) : (
         <div>
           <DynamicGeoMap countries={countries} />
-          <Legend legendItems={legendItemsReverse} />
         </div>
       )}
     </div>
