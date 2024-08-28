@@ -7,12 +7,7 @@ interface LegendProps {
 
 const Legend: React.FC<LegendProps> = ({ legendItems }) => {
     return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "stretch",
-            }}
-        >
+        <div className="align-stretch flex">
             {legendItems.map((item) => (
                 <div
                     key={item.title}

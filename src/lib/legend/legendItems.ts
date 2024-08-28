@@ -4,21 +4,20 @@ var legendItems = [
     new LegendItem(
         "1,000,000 +",
         "#00ffcc80",
-        (cases) => cases >= 1_000_000,
-        "white"
+        (cases) => cases >= 1_000_000
     ),
 
     new LegendItem(
         "500,000 - 999,999",
         "#00ffcc60",
-        (cases) => cases >= 500_000 && cases < 1_000_000,
-        "White"
+        (cases) => cases >= 500_000 && cases < 1_000_000
     ),
 
     new LegendItem(
         "200,000 - 499,999",
         "#00ffcc40",
-        (cases) => cases >= 200_000 && cases < 500_000
+        (cases) => cases >= 200_000 && cases < 500_000,
+
     ),
 
     new LegendItem(
