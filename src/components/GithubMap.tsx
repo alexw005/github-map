@@ -1,22 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import LoadCountryTask, { Country } from "@/lib/helper/loadCountryTask";
-import legendItems from "@/lib/legend/legendItems";
 import GeoMap from "./GeoMap";
-import Legend from "./Legend";
 import SearchTextInput from "./SearchTextInput";
-import dynamic from "next/dynamic";
-const DynamicGeoMap = dynamic(() => import("./GeoMap"), {
-  ssr: false,
-})
+import { useSearchParams } from "next/navigation";
+import Loading from "./Loading";
+
 const GithubMap = () => {
+  const searchParams = useSearchParams()
   const [countries, setCountries] = useState<Country[]>([]);
-  const [searchText, setSearchText] = useState<string>("");
-  const loadData = (s: string) => {
+  const [searchText, setSearchText] = useState<string>('');
+  const search = searchParams.get('search')
+  if (search && search !== searchText) {
+    setSearchText(search)
+  }
+  const loadData = useCallback((s: string) => {
     const loadCountriesTask = new LoadCountryTask();
     loadCountriesTask.loadGithub(s, (countries) => setCountries(countries));
-  };
+  }, []);
   useEffect(() => {
     loadData(searchText);
   }, [searchText, setSearchText, loadData]);
@@ -28,11 +30,11 @@ const GithubMap = () => {
     <div>
       {searchText.trim() === '' || countries.length === 0 ? (
         <>
-          <SearchTextInput onSearch={handleSearch} />
+          {searchText.trim() !== '' ? <Loading /> : <SearchTextInput onSearch={handleSearch} />}
         </>
       ) : (
         <div>
-          <DynamicGeoMap countries={countries} />
+          <GeoMap countries={countries} />
         </div>
       )}
     </div>

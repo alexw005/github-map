@@ -2,34 +2,34 @@ import LegendItem from "./legendItem";
 
 var legendItems = [
     new LegendItem(
-        "1,000,000 +",
+        "100,000 +",
         "#00ffcc80",
-        (cases) => cases >= 1_000_000
+        (cases) => cases >= 100_000
     ),
 
     new LegendItem(
-        "500,000 - 999,999",
+        "50,000 - 99,999",
         "#00ffcc60",
-        (cases) => cases >= 500_000 && cases < 1_000_000
+        (cases) => cases >= 50_000 && cases < 100_000
     ),
 
     new LegendItem(
-        "200,000 - 499,999",
+        "20,000 - 49,999",
         "#00ffcc40",
-        (cases) => cases >= 200_000 && cases < 500_000,
+        (cases) => cases >= 20_000 && cases < 50_000,
 
     ),
 
     new LegendItem(
-        "50,000 - 199,999",
+        "5,000 - 19,999",
         "#00ffcc20",
-        (cases) => cases >= 50_000 && cases < 200_000
+        (cases) => cases >= 5_000 && cases < 20_000
     ),
 
     new LegendItem(
-        "0 - 49,999",
+        "0 - 4,999",
         "#00ffcc10",
-        (cases) => cases > 0 && cases < 50_000
+        (cases) => cases > 0 && cases < 5_000
     ),
 
     new LegendItem("No Data", "#ffffff", (cases) => true),
