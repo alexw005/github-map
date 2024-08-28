@@ -21,7 +21,7 @@ interface GithubCountry {
   country: string;
   totalCount: string;
 }
-const { features } = countries as { features: Country[] };
+const features: Country[] = (countries as any).features;
 
 class LoadCountryTask {
   private githubApiUrl: string = `https://api.github.com/search/users?q=location:`;
