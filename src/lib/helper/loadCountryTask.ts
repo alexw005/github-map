@@ -17,11 +17,6 @@ export interface Country {
   geometry: Record<string, any>;
 }
 
-interface CovidCountry {
-  ISO3: string;
-  Confirmed: string;
-}
-
 interface GithubCountry {
   country: string;
   totalCount: string;
