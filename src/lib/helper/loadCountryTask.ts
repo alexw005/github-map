@@ -35,8 +35,8 @@ class LoadCountryTask {
   private setState: ((features: Country[]) => void) | null = null;
   private fetchGithubData = async (searchString: string) => {
     try {
-      const response = await axios.get(`${this.githubApiUrl}${searchString}`);
-      const data = response.data;
+      const response = searchString.trim() !== '' ? await axios.get(`${this.githubApiUrl}${searchString}`) : undefined;
+      const data = response?.data;
 
       const processedData: GithubCountry = {
         country: searchString,
@@ -101,7 +101,6 @@ class LoadCountryTask {
       this.setCountryColor(country);
     }
     if (this.setState) {
-      console.log(features);
       this.setState(features);
     }
   }
