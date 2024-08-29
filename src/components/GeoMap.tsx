@@ -15,8 +15,8 @@ const GeoMap = ({ countries }: { countries: Country[] }) => {
     };
     const onEachCountry = (country: Country, layer: any) => {
         layer.options.fillColor = country.properties.color;
-        layer.bindPopup(`${country.properties.ADMIN} ${country.properties.confirmedText}`);
-        if (country.properties.confirmedText) layer.bindTooltip(country.properties.confirmedText, { permanent: true, direction: "center", className: " text-lg custom-tooltip" });
+        layer.bindPopup(`${country.properties.ADMIN} ${country.properties.totalCountText}`);
+        if (country.properties.totalCountText) layer.bindTooltip(country.properties.totalCountText, { permanent: true, direction: "center", className: " text-lg custom-tooltip" });
         layer.on({
             click: () => {
                 // Access the map instance using layer._map

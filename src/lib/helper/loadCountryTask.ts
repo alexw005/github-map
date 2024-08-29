@@ -2,11 +2,12 @@ import axios from "axios";
 import papa from "papaparse";
 import countries from "../geoJson/countries.json";
 import legendItems from "../legend/legendItems";
+import { API_BASE_URL } from "./constant";
 
 export interface CountryProperties {
   ISO_A3: string;
-  confirmed: number;
-  confirmedText: string;
+  totalCount: number;
+  totalCountText: string;
   color?: string;
   ADMIN: string;
 }
@@ -24,7 +25,7 @@ interface GithubCountry {
 const features: Country[] = (countries as any).features;
 
 class LoadCountryTask {
-  private githubApiUrl: string = `https://api.github.com/search/users?q=location:`;
+  private githubApiUrl: string = `${API_BASE_URL}/search?country=`;
   private setState: ((features: Country[]) => void) | null = null;
   private fetchGithubData = async (searchString: string) => {
     try {
@@ -33,7 +34,7 @@ class LoadCountryTask {
 
       const processedData: GithubCountry = {
         country: searchString,
-        totalCount: data.total_count,
+        totalCount: data.count,
       };
       this.processGithubData(processedData);
     } catch (error) {
@@ -54,13 +55,13 @@ class LoadCountryTask {
           feature.properties.ADMIN.toLowerCase() === githubCountry.country?.toLowerCase(),
       )!;
 
-      country.properties.confirmed = 0;
-      country.properties.confirmedText = "0";
+      country.properties.totalCount = 0;
+      country.properties.totalCountText = "0";
 
       if (githubCountry != null) {
         let totalCount = Number(githubCountry.totalCount);
-        country.properties.confirmed = totalCount;
-        country.properties.confirmedText = this.formatNumberWithCommas(totalCount);
+        country.properties.totalCount = totalCount;
+        country.properties.totalCountText = this.formatNumberWithCommas(totalCount);
       }
       this.setCountryColor(country);
     }
@@ -70,7 +71,7 @@ class LoadCountryTask {
   }
 
   private setCountryColor(country: Country): void {
-    const legendItem = legendItems.find((item: any) => item.isFor(country.properties.confirmed));
+    const legendItem = legendItems.find((item: any) => item.isFor(country.properties.totalCount));
 
     if (legendItem != null) country.properties.color = legendItem.color;
   }
