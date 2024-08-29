@@ -19,6 +19,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              value: https://ghmap.fswoon.au/api/v1
       imagePullSecrets:
         - name: regcred
      
