@@ -5,7 +5,7 @@ metadata:
   namespace: ghmap
   name: ingress-service
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     # REMOVE CLASSNAME ANNOTATION
     nginx.ingress.kubernetes.io/use-regex: 'true'
     # ADD ANNOTATION
