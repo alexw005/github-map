@@ -1,17 +1,16 @@
 FROM node:current-alpine3.20 as builder
 WORKDIR "/app"
-COPY ./package.json ./
-RUN npm install
+COPY ./package.json ./package-lock.json ./
+RUN npm ci
 COPY . .
 EXPOSE 3000
 RUN npm run build
 
 # from Nextjs doc
-FROM builder as production
+FROM node:current-alpine3.20 as production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN npm ci
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
