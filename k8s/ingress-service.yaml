@@ -5,6 +5,8 @@ metadata:
   namespace: ghmap
   name: ingress-service
   annotations:
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
     cert-manager.io/cluster-issuer: letsencrypt-prod
     # REMOVE CLASSNAME ANNOTATION
     nginx.ingress.kubernetes.io/use-regex: 'true'
@@ -19,6 +21,7 @@ spec:
       http:
         paths:
           - path: /?(.*)
+          # - path: /?(?!oauth2|api)(.*)
             # UPDATE PATH
             pathType: ImplementationSpecific
             # ADD PATHTYPE
