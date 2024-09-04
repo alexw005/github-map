@@ -1,11 +1,15 @@
-import { Country } from "@/lib/helper/loadCountryTask";
+import LoadCountryTask, { Country } from "@/lib/helper/loadCountryTask";
 import "leaflet/dist/leaflet.css";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 import { useRouter } from "next/navigation";
 import TopLeftSearchInput from "./SideSearchBar";
+import { useCallback, useEffect, useState } from "react";
 // import "./CovidMap.css";
 
-const GeoMap = ({ countries }: { countries: Country[] }) => {
+const GeoMap = ({ searchText }: { searchText?: string }) => {
+    const [countries, setCountries] = useState<Country[]>([]);
+
+    const [searchValue, setSearchText] = useState<string | null>(searchText || '');
     const router = useRouter();
     const mapStyle = {
         fillColor: "grey",
@@ -13,6 +17,14 @@ const GeoMap = ({ countries }: { countries: Country[] }) => {
         color: "grey",
         fillOpacity: 1,
     };
+    const loadData = useCallback((s: string) => {
+        const loadCountriesTask = new LoadCountryTask();
+        loadCountriesTask.loadGithub(s, (countries) => setCountries(countries));
+    }, []);
+    useEffect(() => {
+        if (searchValue) loadData(searchValue);
+    }, [searchValue, setSearchText, loadData]);
+
     const onEachCountry = (country: Country, layer: any) => {
         layer.options.fillColor = country.properties.color;
         layer.bindPopup(`${country.properties.ADMIN} ${country.properties.totalCountText}`);
