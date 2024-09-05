@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 
-import LoadCountryTask, { Country } from "@/lib/helper/loadCountryTask";
+import LoadCountryTask, { Feature } from "@/lib/helper/loadCountryTask";
 import GeoMap from "./GeoMap";
 import SearchTextInput from "./SearchTextInput";
 import { useSearchParams } from "next/navigation";
