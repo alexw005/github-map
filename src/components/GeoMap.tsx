@@ -1,3 +1,4 @@
+'use client';
 import { Feature } from "@/lib/helper/loadCountryTask";
 import "leaflet/dist/leaflet.css";
 import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
@@ -11,9 +12,11 @@ import useAxios from "@/lib/helper/useAxios";
 import Loading from "./Loading";
 import useStableCallback from "@/lib/helper/useStableCallback";
 
+import { useRouter } from "next/navigation";
 // import "./CovidMap.css";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
+    const router = useRouter();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
     const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
     const mapStyle = {
@@ -40,6 +43,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
         if (country.properties.totalCountText) layer.bindTooltip(country.properties.totalCountText, { permanent: true, direction: "center", className: " text-lg custom-tooltip" });
         layer.on({
             click: () => {
+                if (!country.properties.totalCountText) handleSearch(country.properties.ADMIN)
                 // Access the map instance using layer._map
                 const map = layer._map;
                 if (map) {
@@ -53,10 +57,10 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
 
     const handleSearch = (s: string): void => {
         console.log(s);
-        // router.push(`/?search=${s}`);
+        router.push(`/?search=${s}`);
         setSearhValue(s)
-        // history.replaceState(null, "", `/?search=${s}`);
-        // window.location.reload();
+        history.replaceState(null, "", `/?search=${s}`);
+        window.location.reload();
     }
     if (loading) return <Loading />;
     if (error) {
