@@ -33,13 +33,14 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
     const { data, loading, error, refetch } = useAxios(`https://api.github.com/search/users?q=location:${searchValue}`);
     const prevData = useRef(data);
     useEffect(() => {
-        if (data)
+        if (data) {
+            refetch();
             prevData.current = data;
+        }
     }, [searchValue]);
 
     useEffect(() => {
         const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
-        // console.log(prevData.current, data, searchValue, matchedFeature);
         if (!loading && data && data.total_count > 0 && matchedFeature && prevData?.current !== data) {
             prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.total_count);
