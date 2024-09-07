@@ -31,8 +31,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
         color: "#cccccc",
         fillOpacity: 0.2,
     };
-    const { data, loading, error, refetch } = useAxios(`https://api.github.com/search/users?q=location:${searchValue}`);
-
+    const { data, loading, error, refetch } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
     const prevData = useRef(data);
     useEffect(() => {
         if (data) {
