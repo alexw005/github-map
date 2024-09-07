@@ -1,7 +1,7 @@
 'use client';
 import { Feature } from "@/lib/helper/loadCountryTask";
 import "leaflet/dist/leaflet.css";
-import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
+import { GeoJSON, MapContainer, Marker, TileLayer } from "react-leaflet";
 import TopLeftSearchInput from "./SideSearchBar";
 import countries from "../lib\/geoJson/countries.json"
 import { GeoJsonObject } from 'geojson';
@@ -13,11 +13,11 @@ import Loading from "./Loading";
 import useStableCallback from "@/lib/helper/useStableCallback";
 
 import { useRouter } from "next/navigation";
-import { LatLngExpression } from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import useForceUpdate from "@/lib/helper/useForceUpdate";
-// import "./CovidMap.css";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
+    const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
     const forceUpdate = useForceUpdate();
     const router = useRouter();
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
@@ -91,6 +91,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
                 zoom={3}
                 center={center}
             >
+                <Marker position={center} icon={icon} />
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <GeoJSON style={mapStyle} data={geoData} onEachFeature={onEachCountry} />
             </MapContainer>
