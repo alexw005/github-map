@@ -43,11 +43,11 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
     useEffect(() => {
         const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
 
-        if (!loading && data && data.total_count > 0 && matchedFeature && prevData?.current !== data) {
-            const legendItem = legendItems.find((item: any) => item.isFor(data.total_count));
+        if (!loading && data && data.count > 0 && matchedFeature && prevData?.current !== data) {
+            const legendItem = legendItems.find((item: any) => item.isFor(data.count));
 
             prevData.current = data;
-            matchedFeature.properties.totalCountText = String(data.total_count);
+            matchedFeature.properties.totalCountText = String(data.count);
             matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
 
