@@ -16,21 +16,17 @@ const GithubMap = () => {
     setSearchText(search)
   }
 
-
   const handleSearch = (v: string) => {
     setSearchText(v);
   }
   return (
     <div>
-      {searchText.trim() === '' ? (
-        <>
-          {searchText.trim() !== '' ? <Loading /> : <SearchTextInput onSearch={handleSearch} />}
-        </>
-      ) : (
-        <div>
-          <GeoMap searchText={searchText} />
-        </div>
-      )}
+      {searchText.trim() === '' ? <SearchTextInput onSearch={handleSearch} description="Search contry for the total number of github users" />
+        : (
+          <div>
+            <GeoMap searchText={searchText} />
+          </div>
+        )}
     </div>
   );
 };

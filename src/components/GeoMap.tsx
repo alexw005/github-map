@@ -20,19 +20,19 @@ import legendItems from "@/lib/legend/legendItems";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
-    const forceUpdate = useForceUpdate();
     const router = useRouter();
+    const [markers, setMarkers] = useState<LatLngExpression>();
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
     // const [matchedFeature, setMatchedFeature] = useState<Feature | undefined>();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
     const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
     const mapStyle = {
-        fillColor: "grey",
         weight: 2,
-        color: "grey",
-        fillOpacity: 0.5,
+        color: "#cccccc",
+        fillOpacity: 0.2,
     };
-    const { data, loading, error, refetch } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
+    const { data, loading, error, refetch } = useAxios(`https://api.github.com/search/users?q=location:${searchValue}`);
+
     const prevData = useRef(data);
     useEffect(() => {
         if (data) {
@@ -66,6 +66,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
                 const map = layer._map;
                 if (map) {
                     const bounds = layer.getBounds();
+                    setMarkers(bounds.getCenter());
                     setCenter(bounds.getCenter());
                     map.fitBounds(bounds);
                 }
@@ -89,14 +90,14 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
     }
     return (
         <>
-            <TopLeftSearchInput onSearch={handleSearch} />
+            <TopLeftSearchInput onSearch={handleSearch} description="You may click to search" />
             <MapContainer
                 key={center.toString()}
                 style={{ height: "90vh" }}
                 zoom={3}
                 center={center}
             >
-                <Marker position={center} icon={icon} />
+                {markers && <Marker position={markers} icon={icon} />}
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <GeoJSON style={mapStyle} data={geoData} onEachFeature={onEachCountry} />
             </MapContainer>
