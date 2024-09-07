@@ -12,7 +12,7 @@ export interface CountryProperties {
   ADMIN: string;
 }
 
-export interface Country {
+export interface Feature {
   type: string;
   properties: CountryProperties;
   geometry: Record<string, any>;
@@ -22,11 +22,11 @@ interface GithubCountry {
   country: string;
   totalCount: string;
 }
-const features: Country[] = (countries as any).features;
+const features: Feature[] = (countries as any).features;
 
 class LoadCountryTask {
   private githubApiUrl: string = `${API_BASE_URL}/search?country=`;
-  private setState: ((features: Country[]) => void) | null = null;
+  private setState: ((features: Feature[]) => void) | null = null;
   private fetchGithubData = async (searchString: string) => {
     try {
       const response = searchString.trim() !== '' ? await axios.get(`${this.githubApiUrl}${searchString}`) : undefined;
@@ -42,7 +42,7 @@ class LoadCountryTask {
     }
   };
 
-  public loadGithub(searchString: string, setState: (features: Country[]) => void): void {
+  public loadGithub(searchString: string, setState: (features: Feature[]) => void): void {
     this.setState = setState;
     this.fetchGithubData(searchString);
   }
@@ -50,7 +50,7 @@ class LoadCountryTask {
 
   private processGithubData(githubCountry: GithubCountry): void {
     if (githubCountry.country.trim() !== "") {
-      const country: Country = features.find(
+      const country: Feature = features.find(
         (feature) =>
           feature.properties.ADMIN.toLowerCase() === githubCountry.country?.toLowerCase(),
       )!;
@@ -70,7 +70,7 @@ class LoadCountryTask {
     }
   }
 
-  private setCountryColor(country: Country): void {
+  private setCountryColor(country: Feature): void {
     const legendItem = legendItems.find((item: any) => item.isFor(country.properties.totalCount));
 
     if (legendItem != null) country.properties.color = legendItem.color;

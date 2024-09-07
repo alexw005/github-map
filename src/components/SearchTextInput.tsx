@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface SearchTextInputProps {
     onSearch: (searchText: string) => void;
+    description?: string;
 }
 
-const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch }) => {
+const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch, description }) => {
     const [searchText, setSearchText] = useState('');
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -14,7 +15,8 @@ const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch }) => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen flex-col gap-4">
+            <p>{description}</p>
             <div className="flex items-center">
                 <input
                     className="border border-gray-300 rounded-lg p-2 w-80"

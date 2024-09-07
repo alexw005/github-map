@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface SearchTextInputProps {
     onSearch: (searchText: string) => void;
+    description?: string;
 }
 
-const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch }) => {
+const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch, description }) => {
     const [searchText, setSearchText] = useState('');
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -43,6 +44,7 @@ const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch }) => {
                     d="M15 11a4 4 0 11-8 0 4 4 0 018 0z"
                 />
             </svg>
+            <p>{description}</p>
         </div>
     );
 };
