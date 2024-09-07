@@ -15,6 +15,8 @@ import useStableCallback from "@/lib/helper/useStableCallback";
 import { useRouter } from "next/navigation";
 import L, { LatLngExpression } from "leaflet";
 import useForceUpdate from "@/lib/helper/useForceUpdate";
+import { API_BASE_URL } from "@/lib/helper/constant";
+import legendItems from "@/lib/legend/legendItems";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
@@ -30,7 +32,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
         color: "grey",
         fillOpacity: 0.5,
     };
-    const { data, loading, error, refetch } = useAxios(`https://api.github.com/search/users?q=location:${searchValue}`);
+    const { data, loading, error, refetch } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
     const prevData = useRef(data);
     useEffect(() => {
         if (data) {
@@ -41,10 +43,13 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
 
     useEffect(() => {
         const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
+
         if (!loading && data && data.total_count > 0 && matchedFeature && prevData?.current !== data) {
+            const legendItem = legendItems.find((item: any) => item.isFor(data.total_count));
+
             prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.total_count);
-            matchedFeature.properties.color = "red";
+            matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
 
         }
