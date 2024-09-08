@@ -19,9 +19,9 @@ const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch, description
             <p>{description}</p>
             <div className="flex items-center">
                 <input
-                    className="border border-gray-300 rounded-lg p-2 w-80"
+                    className="border border-gray-300 rounded-lg p-2 w-80 bg-black bg-opacity-20"
                     type="text"
-                    placeholder="Search..."
+                    placeholder="eg. Australia"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onKeyDown={handleKeyDown}
