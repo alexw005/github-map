@@ -17,6 +17,7 @@ import L, { LatLngExpression } from "leaflet";
 import useForceUpdate from "@/lib/helper/useForceUpdate";
 import { API_BASE_URL } from "@/lib/helper/constant";
 import legendItems from "@/lib/legend/legendItems";
+import SearchTextInput from "./SearchTextInput";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
@@ -84,8 +85,7 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
     }
     if (loading) return <Loading />;
     if (error) {
-        return <><div>Error: {error.message}
-            <button onClick={refetch}>Retry</button></div></>
+        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} />
     }
     return (
         <>

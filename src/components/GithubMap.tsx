@@ -21,7 +21,7 @@ const GithubMap = () => {
   }
   return (
     <div>
-      {searchText.trim() === '' ? <SearchTextInput onSearch={handleSearch} description="Search contry for the total number of github users" />
+      {searchText.trim() === '' ? <SearchTextInput onSearch={handleSearch} description="Search country for the total number of github users" />
         : (
           <div>
             <GeoMap searchText={searchText} />
