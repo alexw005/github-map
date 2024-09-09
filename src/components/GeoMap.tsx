@@ -1,23 +1,18 @@
 'use client';
-import { Feature } from "@/lib/helper/loadCountryTask";
 import "leaflet/dist/leaflet.css";
 import { GeoJSON, MapContainer, Marker, TileLayer } from "react-leaflet";
 import TopLeftSearchInput from "./SideSearchBar";
 import countries from "../lib\/geoJson/countries.json"
 import { GeoJsonObject } from 'geojson';
-
-
 import { useEffect, useRef, useState } from "react";
 import useAxios from "@/lib/helper/useAxios";
 import Loading from "./Loading";
-import useStableCallback from "@/lib/helper/useStableCallback";
-
 import { useRouter } from "next/navigation";
 import L, { LatLngExpression } from "leaflet";
-import useForceUpdate from "@/lib/helper/useForceUpdate";
 import { API_BASE_URL } from "@/lib/helper/constant";
 import legendItems from "@/lib/legend/legendItems";
 import SearchTextInput from "./SearchTextInput";
+import { Feature } from "@/lib/helper/utils";
 
 const GeoMap = ({ searchText }: { searchText?: string }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
