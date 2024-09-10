@@ -81,56 +81,56 @@ const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch, description
     return (
         <div className={`flex items-center  gap-4  ${isSideBar === true ? '' : 'h-screen flex-col justify-center'}`}>
             {description && <p>{description}</p>}
-            {/* <div className="relative"> */}
-            <input
-                className="border border-gray-300 rounded-lg p-2 w-80 dark:bg-opacity-20 dark:bg-black"
-                type="text"
-                placeholder="eg. Australia"
-                value={searchText}
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyDown}
-            />
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-400 absolute right-2 top-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-5.2-5.2"
+            <div className="relative">
+                <input
+                    className="border border-gray-300 rounded-lg p-2 w-80 dark:bg-opacity-20 dark:bg-black"
+                    type="text"
+                    placeholder="eg. Australia"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyDown}
                 />
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a4 4 0 11-8 0 4 4 0 018 0z"
-                />
-            </svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-gray-400 absolute right-2 top-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-5.2-5.2"
+                    />
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                </svg>
 
-            {showDropdown && (
-                <ul className="absolute bg-white dark:bg-black border border-gray-300 rounded-lg w-80 mt-1 max-h-60 overflow-y-auto z-10">
-                    {filteredOptions.length > 0 ? (
-                        filteredOptions.map((option, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleOptionClick(option)}
-                                className={`p - 2 cursor - pointer ${index === highlightedIndex ? 'bg-gray-200 dark:bg-gray-600' : ''
-                                    } `}
+                {showDropdown && (
+                    <ul className="absolute bg-white dark:bg-black border border-gray-300 rounded-lg w-80 mt-1 max-h-60 overflow-y-auto z-10">
+                        {filteredOptions.length > 0 ? (
+                            filteredOptions.map((option, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleOptionClick(option)}
+                                    className={`p - 2 cursor - pointer ${index === highlightedIndex ? 'bg-gray-200 dark:bg-gray-600' : ''
+                                        } `}
 
-                            >
-                                {option}
-                            </li>
-                        ))
-                    ) : (
-                        <li className="p-2 text-gray-500">No options found</li>
-                    )}
-                </ul>
-            )}
-            {/* </div> */}
+                                >
+                                    {option}
+                                </li>
+                            ))
+                        ) : (
+                            <li className="p-2 text-gray-500">No options found</li>
+                        )}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };
