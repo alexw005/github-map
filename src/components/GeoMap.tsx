@@ -1,7 +1,6 @@
 'use client';
 import "leaflet/dist/leaflet.css";
 import { GeoJSON, MapContainer, Marker, TileLayer } from "react-leaflet";
-import TopLeftSearchInput from "./SideSearchBar";
 import countries from "../lib\/geoJson/countries.json"
 import { GeoJsonObject } from 'geojson';
 import { useEffect, useRef, useState } from "react";
@@ -14,7 +13,7 @@ import legendItems from "@/lib/legend/legendItems";
 import SearchTextInput from "./SearchTextInput";
 import { Feature } from "@/lib/helper/utils";
 
-const GeoMap = ({ searchText }: { searchText?: string }) => {
+const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: string[] }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
     const router = useRouter();
     const [markers, setMarkers] = useState<LatLngExpression>();
@@ -24,25 +23,26 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
     const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
     const mapStyle = {
         weight: 2,
-        color: "#cccccc",
+        color: "#8f8c8c",
         fillOpacity: 0.2,
     };
-    const { data, loading, error, refetch } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
+    const { data, loading, error, refetch: fetchCount } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
+
     const prevData = useRef(data);
     useEffect(() => {
         if (data) {
-            refetch();
-            prevData.current = data;
+            fetchCount();
+            // prevData.current = data;
         }
     }, [searchValue]);
 
     useEffect(() => {
         const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
 
-        if (!loading && data && data.count > 0 && matchedFeature && prevData?.current !== data) {
+        if (!loading && data && data.count > 0 && matchedFeature) {
             const legendItem = legendItems.find((item: any) => item.isFor(data.count));
 
-            prevData.current = data;
+            // prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.count);
             matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
@@ -74,17 +74,15 @@ const GeoMap = ({ searchText }: { searchText?: string }) => {
         console.log(s);
         router.push(`/?search=${s}`);
         setSearhValue(s)
-        history.replaceState(null, "", `/?search=${s}`);
-        // window.location.reload();
 
     }
     if (loading) return <Loading />;
     if (error) {
-        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} />
+        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} options={optionList} />
     }
     return (
         <>
-            <TopLeftSearchInput onSearch={handleSearch} description="You may click to search" />
+            <SearchTextInput onSearch={handleSearch} options={optionList} isSideBar={true} />
             <MapContainer
                 key={center.toString()}
                 style={{ height: "90vh" }}
