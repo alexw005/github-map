@@ -1,8 +1,7 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 import GeoMap from "./GeoMap";
-import SearchTextInput from "./SearchTextInput";
 import { useSearchParams } from "next/navigation";
 import Loading from "./Loading";
 import useAxios from "@/lib/helper/useAxios";
@@ -18,20 +17,12 @@ const GithubMap = () => {
     setSearchText(search)
   }
 
-  const handleSearch = (v: string) => {
-    setSearchText(v);
-  }
   if (loadingOption) {
     return <Loading />;
   }
   return (
     <div>
-      {searchText.trim() === '' ? <SearchTextInput onSearch={handleSearch} description="Search country for the total number of github users" options={optionList} />
-        : (
-          <div>
-            <GeoMap searchText={searchText} optionList={optionList} />
-          </div>
-        )}
+      <GeoMap optionList={optionList} />
     </div>
   );
 };
