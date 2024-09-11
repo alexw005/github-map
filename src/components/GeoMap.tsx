@@ -13,14 +13,14 @@ import legendItems from "@/lib/legend/legendItems";
 import SearchTextInput from "./SearchTextInput";
 import { Feature } from "@/lib/helper/utils";
 
-const GeoMap = ({ optionList }: { optionList: string[] }) => {
+const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: string[] }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
     const router = useRouter();
     const [markers, setMarkers] = useState<LatLngExpression>();
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
     // const [matchedFeature, setMatchedFeature] = useState<Feature | undefined>();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
-    const [searchValue, setSearhValue] = useState<string>('');
+    const [searchValue, setSearhValue] = useState<string>(searchText || '');
     const mapStyle = {
         weight: 2,
         color: "#8f8c8c",
@@ -29,7 +29,7 @@ const GeoMap = ({ optionList }: { optionList: string[] }) => {
     const { data, loading, error, refetch: fetchCount } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
 
     useEffect(() => {
-        if (data) {
+        if (searchValue !== '') {
             fetchCount();
         }
     }, [searchValue]);
@@ -74,13 +74,10 @@ const GeoMap = ({ optionList }: { optionList: string[] }) => {
 
     }
     if (loading) return <Loading />;
-    if (error && searchValue.trim() !== '') {
-        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} options={optionList} isSideBar={true} />
-    }
-    if (searchValue.trim() === '') return <SearchTextInput onSearch={handleSearch} description="Search country for the total number of github users" options={optionList} />
-    return (
 
+    return (
         <>
+            {error && <p>`Error: ${error.message}, please try again`</p>}
             <SearchTextInput onSearch={handleSearch} options={optionList} isSideBar={true} />
             <MapContainer
                 key={center.toString()}
@@ -93,7 +90,6 @@ const GeoMap = ({ optionList }: { optionList: string[] }) => {
                 <GeoJSON style={mapStyle} data={geoData} onEachFeature={onEachCountry} />
             </MapContainer>
         </>
-
     );
 };
 
