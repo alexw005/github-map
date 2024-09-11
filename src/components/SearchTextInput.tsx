@@ -112,7 +112,7 @@ const SearchTextInput: React.FC<SearchTextInputProps> = ({ onSearch, description
                 </svg>
 
                 {showDropdown && (
-                    <ul className="absolute bg-white dark:bg-black border border-gray-300 rounded-lg w-80 mt-1 max-h-60 overflow-y-auto z-10">
+                    <ul className="absolute z-[500] bg-white dark:bg-black border border-gray-300 rounded-lg w-80 mt-1 max-h-60 overflow-y-auto z-10">
                         {filteredOptions.length > 0 ? (
                             filteredOptions.map((option, index) => (
                                 <li
