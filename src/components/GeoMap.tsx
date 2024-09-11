@@ -20,35 +20,28 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
     // const [matchedFeature, setMatchedFeature] = useState<Feature | undefined>();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
-    const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
+    const [searchValue, setSearhValue] = useState<string>(searchText || '');
     const mapStyle = {
         weight: 2,
         color: "#8f8c8c",
         fillOpacity: 0.2,
     };
-    const { data, loading, error, refetch: fetchCount } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
+    const { data, loading, error } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
 
-    const prevData = useRef(data);
-    useEffect(() => {
-        if (data) {
-            fetchCount();
-            // prevData.current = data;
-        }
-    }, [searchValue]);
+
+    const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
 
     useEffect(() => {
-        const matchedFeature = geoData.features?.find((f) => f.properties.ADMIN.toLowerCase() === searchValue?.toLowerCase());
 
         if (!loading && data && data.count > 0 && matchedFeature) {
             const legendItem = legendItems.find((item: any) => item.isFor(data.count));
 
-            // prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.count);
             matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
 
         }
-    }, [data, loading, searchValue]);
+    }, [data, loading]);
 
     const onEachCountry = (country: Feature, layer: any) => {
         layer.options.fillColor = country.properties.color;
@@ -80,7 +73,7 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
 
     return (
         <>
-            {error && <p className="text-red-600">`Error: ${error.message}, please try again`</p>}
+            {error && <p className="text-red-600">`Error: {error.message}, please try again`</p>}
             <SearchTextInput onSearch={handleSearch} options={optionList} isSideBar={true} />
             <MapContainer
                 key={center.toString()}
