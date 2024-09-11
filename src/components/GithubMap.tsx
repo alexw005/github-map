@@ -8,7 +8,7 @@ import useAxios from "@/lib/helper/useAxios";
 import { API_BASE_URL } from "@/lib/helper/constant";
 
 const GithubMap = () => {
-  const { data: optionList, loading: loadingOption, refetch: fetchOptions } = useAxios(`${API_BASE_URL}/list/countries`);
+  const { data: optionList, loading: loadingOption } = useAxios(`${API_BASE_URL}/list/countries`);
   const [searchText, setSearchText] = useState<string>('');
 
   const handleSearch = (v: string) => {
