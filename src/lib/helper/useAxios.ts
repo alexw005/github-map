@@ -1,20 +1,17 @@
+//axios hook
+
 import { useState, useEffect } from 'react';
+
 import axios from 'axios';
 
 export const useAxios = (url: string) => {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
-
     const fetchData = async () => {
         try {
             const response = await axios.get(url);
-            const newData = response.data;
-
-            // Only update state if newData is different
-            if (JSON.stringify(newData) !== JSON.stringify(data)) {
-                setData(newData);
-            }
+            setData(response.data);
         } catch (error) {
             setError(error);
         } finally {
@@ -23,15 +20,11 @@ export const useAxios = (url: string) => {
     };
 
     useEffect(() => {
+        setLoading(true)
         fetchData();
     }, [url]);
 
-    const refetch = () => {
-        setLoading(true); // Set loading true when refetching
-        fetchData();
-    };
-
-    return { data, loading, error, refetch };
+    return { data, loading, error, fetchData };
 };
 
 export default useAxios;
