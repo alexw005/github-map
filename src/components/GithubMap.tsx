@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import GeoMap from "./GeoMap";
 import SearchTextInput from "./SearchTextInput";

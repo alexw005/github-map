@@ -20,7 +20,7 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
     // const [matchedFeature, setMatchedFeature] = useState<Feature | undefined>();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
-    const [searchValue, setSearhValue] = useState<string>(searchText || '');
+    const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
     const mapStyle = {
         weight: 2,
         color: "#8f8c8c",
@@ -28,9 +28,11 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
     };
     const { data, loading, error, refetch: fetchCount } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
 
+    const prevData = useRef(data);
     useEffect(() => {
-        if (searchValue !== '') {
+        if (data) {
             fetchCount();
+            // prevData.current = data;
         }
     }, [searchValue]);
 
@@ -40,6 +42,7 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
         if (!loading && data && data.count > 0 && matchedFeature) {
             const legendItem = legendItems.find((item: any) => item.isFor(data.count));
 
+            // prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.count);
             matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
@@ -77,7 +80,7 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
 
     return (
         <>
-            {error && <p>`Error: ${error.message}, please try again`</p>}
+            {error && <p className="text-red-600">`Error: ${error.message}, please try again`</p>}
             <SearchTextInput onSearch={handleSearch} options={optionList} isSideBar={true} />
             <MapContainer
                 key={center.toString()}
