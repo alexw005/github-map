@@ -13,14 +13,14 @@ import legendItems from "@/lib/legend/legendItems";
 import SearchTextInput from "./SearchTextInput";
 import { Feature } from "@/lib/helper/utils";
 
-const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: string[] }) => {
+const GeoMap = ({ optionList }: { optionList: string[] }) => {
     const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
     const router = useRouter();
     const [markers, setMarkers] = useState<LatLngExpression>();
     const [center, setCenter] = useState<LatLngExpression>([0, 70]);
     // const [matchedFeature, setMatchedFeature] = useState<Feature | undefined>();
     const [geoData, setGeoData] = useState<GeoJsonObject & { features: Feature[] }>(countries as any);
-    const [searchValue, setSearhValue] = useState<string | null>(searchText || '');
+    const [searchValue, setSearhValue] = useState<string>('');
     const mapStyle = {
         weight: 2,
         color: "#8f8c8c",
@@ -28,11 +28,9 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
     };
     const { data, loading, error, refetch: fetchCount } = useAxios(`${API_BASE_URL}/search?country=${searchValue}`);
 
-    const prevData = useRef(data);
     useEffect(() => {
         if (data) {
             fetchCount();
-            // prevData.current = data;
         }
     }, [searchValue]);
 
@@ -42,7 +40,6 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
         if (!loading && data && data.count > 0 && matchedFeature) {
             const legendItem = legendItems.find((item: any) => item.isFor(data.count));
 
-            // prevData.current = data;
             matchedFeature.properties.totalCountText = String(data.count);
             matchedFeature.properties.color = legendItem != null ? legendItem.color : 'white';
             setGeoData({ ...geoData, features: [...geoData.features.filter((f) => f.properties.ADMIN !== matchedFeature.properties.ADMIN), matchedFeature] });
@@ -77,10 +74,12 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
 
     }
     if (loading) return <Loading />;
-    if (error) {
-        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} options={optionList} />
+    if (error && searchValue.trim() !== '') {
+        return <SearchTextInput onSearch={handleSearch} description={`Error: ${error.message}, please try again`} options={optionList} isSideBar={true} />
     }
+    if (searchValue.trim() === '') return <SearchTextInput onSearch={handleSearch} description="Search country for the total number of github users" options={optionList} />
     return (
+
         <>
             <SearchTextInput onSearch={handleSearch} options={optionList} isSideBar={true} />
             <MapContainer
@@ -94,6 +93,7 @@ const GeoMap = ({ searchText, optionList }: { searchText?: string, optionList: s
                 <GeoJSON style={mapStyle} data={geoData} onEachFeature={onEachCountry} />
             </MapContainer>
         </>
+
     );
 };
 
