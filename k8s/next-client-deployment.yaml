@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: next-client
-          image: fswoon2/alexwfs:github-map
+          image: fswoon2/alexwfs:github-map-dev
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
