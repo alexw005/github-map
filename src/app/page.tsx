@@ -1,17 +1,11 @@
-import GithubMap from "@/components/GithubMap";
-import dynamic from "next/dynamic";
-import Image from "next/image";
+import DynamicGithubMapWrapper from "@/components/DynamicGithubMap"
 
 export default function Home() {
-
-  const DynamicGithubMap = dynamic(() => import("@/components/GithubMap"), {
-    ssr: false,
-  })
   return (
     <main>
       <div className="">
-        <DynamicGithubMap />
+        <DynamicGithubMapWrapper />
       </div>
     </main>
-  );
+  )
 }
