@@ -1,4 +1,4 @@
-FROM node:current-alpine3.20 as builder
+FROM node:22-alpine as builder
 WORKDIR "/app"
 COPY ./package.json ./package-lock.json ./
 RUN npm ci
@@ -7,7 +7,7 @@ EXPOSE 3000
 RUN npm run build
 
 # from Nextjs doc
-FROM node:current-alpine3.20 as production
+FROM node:22-alpine as production
 WORKDIR /app
 
 ENV NODE_ENV=production

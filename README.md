@@ -39,7 +39,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Welcome to the hosted web for testing
 
-You are welcome to test the web application [Github mao](https://ghmap.fswoon.au)
+You are welcome to test the web application [Github map](https://ghmap.fswoon.au)
 
 You will be prompt to login with your github account.
 
